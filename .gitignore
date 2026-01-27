@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+
+# Output directories
+downloads/
+transcriptions/
+
+# OS
+.DS_Store
+output/
