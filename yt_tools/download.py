@@ -55,11 +55,12 @@ def download_videos(videos: list[dict], output_dir: str, resolution: str = "1080
     output_path = Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)
 
-    # Prefer m4a audio (AAC) to avoid re-encoding when merging to mp4
+    # H.264 video + AAC audio for maximum TV USB compatibility
+    # Most TVs cannot decode AV1/VP9 video or Opus audio via USB
     if resolution == "best":
-        fmt = "bestvideo+bestaudio[ext=m4a]/bestvideo+bestaudio/best"
+        fmt = "bestvideo[vcodec^=avc1]+bestaudio[ext=m4a]/bestvideo[vcodec^=avc1]+bestaudio/best[vcodec^=avc1]"
     else:
-        fmt = f"bestvideo[height<={resolution}]+bestaudio[ext=m4a]/bestvideo[height<={resolution}]+bestaudio/best[height<={resolution}]"
+        fmt = f"bestvideo[height<={resolution}][vcodec^=avc1]+bestaudio[ext=m4a]/bestvideo[height<={resolution}][vcodec^=avc1]+bestaudio/best[height<={resolution}][vcodec^=avc1]"
 
     for v in videos:
         video_url = f"https://www.youtube.com/watch?v={v['id']}"
